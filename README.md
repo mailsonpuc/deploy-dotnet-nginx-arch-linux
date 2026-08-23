@@ -1,3 +1,5 @@
+## /etc/nginx/nginx.conf 
+
 ```bash
 #user http;
 worker_processes 1;
@@ -297,5 +299,62 @@ http {
     #}
 
 }
+
+```
+
+---
+
+## /etc/systemd/system/petshoop-api.service
+
+```bash
+
+# --- SEÇÃO DE METADADOS E DEPENDÊNCIAS ---
+[Unit]
+# Descrição amigável do serviço exibida nos logs e comandos do systemd
+Description=PetShoop API .NET
+
+# Define que este serviço só deve iniciar após a rede do sistema estar operacional
+After=network.target
+
+# --- SEÇÃO DE CONFIGURAÇÕES DE EXECUÇÃO ---
+[Service]
+# Diretório de trabalho onde o serviço será executado (pasta de publicação do .NET)
+WorkingDirectory=/home/mailson/petShoopFullStack/src/backend/PetShoop.API/bin/Publish
+
+# Comando exato para iniciar o executável da sua API
+ExecStart=/home/mailson/petShoopFullStack/src/backend/PetShoop.API/bin/Publish/PetShoop.API
+
+# Configura o serviço para reiniciar automaticamente em qualquer falha ou fechamento
+Restart=always
+
+# Tempo de espera (em segundos) antes de tentar reiniciar a API em caso de queda
+RestartSec=10
+
+# Define o ambiente da aplicação ASP.NET Core como Produção
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+# Define a porta local em que a API vai escutar requisições (http://localhost:5000)
+Environment=ASPNETCORE_URLS=http://localhost:5000
+
+# Variáveis para indicar o caminho exato da instalação do SDK/Runtime .NET no sistema
+Environment="DOTNET_ROOT=/home/mailson/dotnet"
+Environment="DOTNET_ROOT_X64=/home/mailson/dotnet"
+
+# Atualiza a variável PATH para o systemd reconhecer executáveis do .NET na pasta do usuário
+Environment="PATH=/home/mailson/dotnet:/home/mailson/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/bin"
+
+# Variável de ambiente com a string de conexão do banco de dados SQL Server
+Environment="ConnectionStrings__DefaultConnection=Server=127.0.0.1;Database=clearArchitecture;User=sa;Password=1q2w3e4r@#$;TrustServerCertificate=True;"
+
+# Variável de ambiente com a chave secreta usada para assinar/validar tokens JWT
+Environment="Jwt__SecretKey=SVOM^]Nw%Ns{,I7rH"
+
+# Usuário do Linux com permissão para executar o processo do serviço
+User=mailson
+
+# --- SEÇÃO DE INICIALIZAÇÃO NO BOOT ---
+[Install]
+# Define que o serviço deve ser iniciado no modo multi-usuário (padrão de inicialização do servidor)
+WantedBy=multi-user.target
 
 ```
