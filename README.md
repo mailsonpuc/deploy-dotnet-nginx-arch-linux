@@ -358,3 +358,11 @@ User=mailson
 WantedBy=multi-user.target
 
 ```
+
+---
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable petshoop-api
+sudo systemctl start petshoop-api
+```
