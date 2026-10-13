@@ -365,4 +365,11 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 sudo systemctl enable petshoop-api
 sudo systemctl start petshoop-api
+
+sudo systemctl status petshoop-api
+sudo systemctl daemon-reload
+sudo systemctl restart petshoop-api
+
+sudo nginx -t
+sudo systemctl reload nginx
 ```
